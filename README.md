@@ -35,6 +35,8 @@ A clinical appointment booking system featuring a Real-Time Voice AI Agent capab
 - **CSS Modules / Vanilla CSS**: Stunning dark glassmorphism design.
 
 ---
+<img width="1914" height="852" alt="image" src="https://github.com/user-attachments/assets/4ad8a96d-81fb-4fb8-8267-71a22ec4909f" />
+<img width="1893" height="846" alt="image" src="https://github.com/user-attachments/assets/f295c797-099d-40b8-9a93-974c2e93ebbc" />
 
 ## 📦 Getting Started
 
