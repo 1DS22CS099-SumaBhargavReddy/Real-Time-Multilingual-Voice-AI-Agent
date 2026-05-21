@@ -1,0 +1,90 @@
+# Real-Time Multilingual Voice AI Agent
+
+A clinical appointment booking system featuring a Real-Time Voice AI Agent capable of understanding spoken language, managing scheduling logic (bookings, rescheduling, cancellations), resolving conflicts, and speaking back responses in English, Hindi, and Tamil.
+
+---
+
+## 🚀 Key Features
+
+- **Real-Time Voice & Text WebSockets**: Bidirectional audio and state streaming over WebSockets.
+- **Multilingual Support**: Supports **English**, **Hindi**, and **Tamil** dynamically.
+- **Dual Voice Pipeline Modes**:
+  - **Hybrid Mode**: Client-side `SpeechRecognition` (STT) and `SpeechSynthesis` (TTS) for fast, low-latency execution.
+  - **Server Mode**: Streams microphone data to backend using OpenAI Whisper (STT) and Edge-TTS (TTS) for cross-browser accessibility.
+- **Appointment Scheduling Engine**:
+  - Automatically identifies user intent (Book, Reschedule, Cancel).
+  - Handles scheduling conflicts and provides alternative slot recommendations.
+  - SQLite database persists doctors, patients, and calendar slots.
+- **Aesthetic Dark Glassmorphic Dashboard**:
+  - Visual calendar view showing slot availability.
+  - Telemetry board displaying real-time latencies (STT, LLM Thinking, DB Access, TTS, and Total Roundtrip).
+  - Live transcripts and detailed LLM thinking logs.
+
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- **FastAPI**: Main API framework for HTTP endpoints and WebSockets.
+- **SQLite**: Database for storing doctors, patient profiles (memory), and appointments.
+- **Edge-TTS**: Python library for high-quality synthetic voices.
+- **OpenAI Whisper & GPT-4o-mini**: Advanced speech-to-text translation and AI reasoning.
+
+### Frontend
+- **React (Vite) + TypeScript**: Fast modern UI framework.
+- **CSS Modules / Vanilla CSS**: Stunning dark glassmorphism design.
+
+---
+
+## 📦 Getting Started
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+
+### Setup & Installation
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/1DS22CS099-SumaBhargavReddy/Real-Time-Multilingual-Voice-AI-Agent.git
+   cd Real-Time-Multilingual-Voice-AI-Agent
+   ```
+
+2. **Backend Setup**:
+   ```bash
+   # Create a virtual environment
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+   # Install dependencies
+   pip install -r requirements.txt
+
+   # Initialize & start FastAPI server
+   python -m uvicorn backend.api.main:app --port 8000
+   ```
+
+3. **Frontend Setup**:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+4. **Access the App**:
+   Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## 🧪 Verification & Testing
+
+### 1. Unit Tests
+To verify scheduling and conflict resolution rules:
+```bash
+python -m unittest tests.test_scheduling
+```
+
+### 2. Integration Tests
+To test real-time WebSocket communication and audio streaming:
+```bash
+python -X utf8 tests/test_websocket.py
+```
