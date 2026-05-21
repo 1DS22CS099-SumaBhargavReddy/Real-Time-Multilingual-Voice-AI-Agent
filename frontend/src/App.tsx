@@ -45,6 +45,8 @@ interface LatencyMetrics {
   total: number;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:8000`;
+
 export default function App() {
   // App settings
   const [patientId, setPatientId] = useState<string>('P101');
@@ -121,7 +123,7 @@ export default function App() {
 
   const fetchDoctors = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/doctors');
+      const res = await fetch(`${API_BASE_URL}/api/doctors`);
       const data = await res.json();
       if (data.status === 'success') setDoctors(data.doctors);
     } catch (e) {
@@ -131,7 +133,7 @@ export default function App() {
 
   const fetchAppointments = async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/appointments');
+      const res = await fetch(`${API_BASE_URL}/api/appointments`);
       const data = await res.json();
       if (data.status === 'success') setAppointments(data.appointments);
     } catch (e) {
@@ -141,7 +143,7 @@ export default function App() {
 
   const fetchPatientProfile = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/patients/${patientId}`);
+      const res = await fetch(`${API_BASE_URL}/api/patients/${patientId}`);
       const data = await res.json();
       if (data.status === 'success') setPatientProfile(data.patient);
     } catch (e) {
@@ -152,7 +154,7 @@ export default function App() {
   // Trigger outbound campaign trigger
   const triggerOutbound = async (campaignType: string, docId: number) => {
     try {
-      const res = await fetch('http://localhost:8000/api/outbound/trigger', {
+      const res = await fetch(`${API_BASE_URL}/api/outbound/trigger`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -257,8 +259,8 @@ export default function App() {
     setThinkingLogs(['Initiating WebSocket handshake...']);
     
     // Connect to WebSocket
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//localhost:8000/ws/voice?session_id=sess_${Date.now()}&patient_id=${patientId}&api_key=${apiKey}`;
+    const wsBaseUrl = API_BASE_URL.replace(/^http/, 'ws');
+    const wsUrl = `${wsBaseUrl}/ws/voice?session_id=sess_${Date.now()}&patient_id=${patientId}&api_key=${apiKey}`;
     
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
