@@ -90,3 +90,40 @@ To test real-time WebSocket communication and audio streaming:
 ```bash
 python -X utf8 tests/test_websocket.py
 ```
+
+---
+
+## ☁️ Cloud Deployment Guide
+
+This app has a split-architecture (Stateless Vite frontend + Stateful WebSocket FastAPI backend). Follow these instructions to deploy them:
+
+### 1. Deploy the Backend (on Render or Railway)
+
+Since this app requires **persistent WebSockets** and **SQLite database** operations, it must be hosted on a persistent web server (not serverless functions).
+
+#### Option A: Render.com
+1. Log in to [Render](https://render.com) and click **New > Web Service**.
+2. Connect your GitHub repository.
+3. Configure the following settings:
+   - **Environment**: `Python`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `python -m uvicorn backend.api.main:app --host 0.0.0.0 --port $PORT`
+4. Add the following Environment Variable:
+   - Key: `DATABASE_PATH` | Value: `backend/appointments.db` (Render will build a local file, or you can attach a persistent volume for production storage persistence).
+5. Click **Deploy**. Once successfully built, copy the backend URL (e.g., `https://care2-voice-backend.onrender.com`).
+
+---
+
+### 2. Deploy the Frontend (on Vercel)
+
+Vercel is ideal for hosting the static React Vite frontend:
+1. Log in to [Vercel](https://vercel.com) and click **Add New > Project**.
+2. Select your repository.
+3. Configure the Project settings:
+   - **Root Directory**: Select `frontend` (important as the frontend resides in this subdirectory).
+   - **Framework Preset**: `Vite` (automatically detected).
+4. Expand **Environment Variables** and add:
+   - **Key**: `VITE_API_URL`
+   - **Value**: `https://care2-voice-backend.onrender.com` (Use the URL of your deployed Render/Railway backend).
+5. Click **Deploy**. Your frontend is now live!
+
